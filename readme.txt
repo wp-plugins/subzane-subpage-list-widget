@@ -10,7 +10,7 @@ Lists all subpages from a selected parent page.
 
 == Description ==
 
-This plugin simply lists all subpages from a selected parent page in the sidebar.
+This plugin simply lists all subpages from a selected parent page in the sidebar. This widget can be placed many times in your sidebar.
 
 == Installation ==
 

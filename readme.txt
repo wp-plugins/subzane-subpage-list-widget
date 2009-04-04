@@ -4,7 +4,7 @@ Donate link:
 Tags: pages, widget, subpages, list
 Requires at least: 2.5
 Tested up to: 2.7.1
-Stable tag: 1.0
+Stable tag: 1.1
 
 Lists all subpages from a selected parent page.
 

@@ -4,7 +4,7 @@ Plugin Name: SubZane Subpage List Widget
 Plugin URI: http://www.subzane.com/projects/subpage-list-widgetsubpage-list-widget/
 Description: Lists all subpages from a selected parent page.
 Author: Andreas Norman
-Version: 1.1
+Version: 1.2
 Author URI: http://www.subzane.com
 */
 
@@ -21,8 +21,9 @@ function SZSubPageListWidget($args, $widget_args = 1) {
 
 	$title = $options[$number]['title'];
 	$parent = $options[$number]['parent'];
+	$exclude = $options[$number]['exclude'];
 
-	$pages = get_pages('child_of='.$parent);
+	$pages = get_pages('exclude='.$exclude.'&child_of='.$parent);
 	
 	echo $before_widget;
 	echo $before_title . $title . $after_title;
@@ -60,14 +61,15 @@ function SZSubPageListWidget_control($widget_args) {
 		foreach ( $this_sidebar as $_widget_id ) {
 			if ( 'SZSubPageListWidget' == $wp_registered_widgets[$_widget_id]['callback'] && isset($wp_registered_widgets[$_widget_id]['params'][0]['number']) ) {
 				$widget_number = $wp_registered_widgets[$_widget_id]['params'][0]['number'];
-				unset($options[$widget_number]);
+				if ( !in_array( "szsubpagelist-$widget_number", $_POST['widget-id'] ) ) unset($options[$widget_number]);
 			}
 		}
 
 		foreach ( (array) $_POST['widget-SZSubPageListWidget'] as $widget_number => $widget_text ) {
 			$title = strip_tags(stripslashes($widget_text['title']));
 			$parent = $widget_text['parent'];
-			$options[$widget_number] = compact( 'title', 'parent' );
+			$exclude = $widget_text['exclude'];
+			$options[$widget_number] = compact( 'title', 'parent', 'exclude');
 		}
 
 		update_option('SZSubPageListWidget', $options);
@@ -81,20 +83,30 @@ function SZSubPageListWidget_control($widget_args) {
 	} else {
 		$title = attribute_escape($options[$number]['title']);
 		$parent = format_to_edit($options[$number]['parent']);
+		$exclude = attribute_escape($options[$number]['exclude']);
 	}
 	
 	?>
-		<label style="line-height: 35px; display: block;" for="SZSubPageListWidget-title-<?php echo $number; ?>">
-			Title:
-			<input style="width: 200px;" id="SZSubPageListWidget-title-<?php echo $number; ?>" name="widget-SZSubPageListWidget[<?php echo $number; ?>][title]" type="text" value="<?php echo $title; ?>" />
-		</label>
+	<p>
+		<label for="SZSubPageListWidget-title-<?php echo $number; ?>">Title:</label>
+		<input id="SZSubPageListWidget-title-<?php echo $number; ?>" name="widget-SZSubPageListWidget[<?php echo $number; ?>][title]" type="text" value="<?php echo $title; ?>" />
 		
-		<label style="line-height: 35px; display: block;" for="SZSubPageListWidget-parent-<?php echo $number; ?>">
-			Parent:
-			<select id="SZSubPageListWidget-parent-<?php echo $number; ?>" name="widget-SZSubPageListWidget[<?php echo $number; ?>][parent]">
-			<?php echo getPagesOptionList($parent)  ?>
-			</select>
-		</label>
+	</p>
+		
+	<p>
+		<label for="SZSubPageListWidget-parent-<?php echo $number; ?>">Parent:</label>
+		<br/>
+		<select id="SZSubPageListWidget-parent-<?php echo $number; ?>" name="widget-SZSubPageListWidget[<?php echo $number; ?>][parent]">
+		<?php echo getPagesOptionList($parent)  ?>
+		</select>
+	</p>
+
+	<p>
+		<label for="SZSubPageListWidget-exclude-<?php echo $number; ?>">Exclude:</label>
+		<input type="text" value="<?php echo $exclude; ?>" id="SZSubPageListWidget-exclude-<?php echo $number; ?>" name="widget-SZSubPageListWidget[<?php echo $number; ?>][exclude]" value=""/>
+		<br/>
+		<small>Page IDs, separated by commas.</small>
+	</p>
 	<input type="hidden" id="widget-SZSubPageListWidget-submit-<?php echo $number; ?>" name="SZSubPageListWidget-submit-<?php echo $number; ?>" value="1" />
 	<?php
 }	
@@ -104,9 +116,9 @@ function getPagesOptionList($selected) {
 	$pages = get_pages();
 	foreach($pages as $page) {
 		if ($selected == $page->ID) {
-			$list .= '<option selected="selected" value="'.$page->ID.'">'.$page->post_title.'</option>';
+			$list .= '<option selected="selected" value="'.$page->ID.'">'.$page->post_title.' - (id: '.$page->ID.')</option>';
 		} else {
-			$list .= '<option value="'.$page->ID.'"">'.$page->post_title.'</option>';
+			$list .= '<option value="'.$page->ID.'"">'.$page->post_title.' - (id: '.$page->ID.')</option>';
 		}
 	}
 	return $list;
@@ -120,8 +132,8 @@ function SZSubPageListWidget_register() {
 
 	if ( !$options = get_option('SZSubPageListWidget') )
 		$options = array();
-	$widget_ops = array('classname' => 'SZSubPageListWidget', 'description' => __('Arbitrary text, HTML, or PHP code'));
-	$control_ops = array('width' => 460, 'height' => 350, 'id_base' => 'szsubpagelist');
+	$widget_ops = array('classname' => 'SZSubPageListWidget', 'description' => __('Lists child pages of a selected page'));
+	$control_ops = array('id_base' => 'szsubpagelist');
 	$name = __('SZ Sub page List');
 
 	$id = false;

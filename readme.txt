@@ -3,8 +3,8 @@ Contributors: Andreas Norman
 Donate link: 
 Tags: pages, widget, subpages, list
 Requires at least: 2.5
-Tested up to: 2.8
-Stable tag: 1.2
+Tested up to: 2.8.3
+Stable tag: 1.2.1
 
 Lists all subpages from a selected parent page.
 

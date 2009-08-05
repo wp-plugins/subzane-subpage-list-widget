@@ -4,9 +4,27 @@ Plugin Name: SubZane Subpage List Widget
 Plugin URI: http://www.subzane.com/projects/subpage-list-widgetsubpage-list-widget/
 Description: Lists all subpages from a selected parent page.
 Author: Andreas Norman
-Version: 1.2
+Version: 1.2.1
 Author URI: http://www.subzane.com
 */
+
+/*  Copyright 2009  Andreas Norman  (email : hello@subzane.com)
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program; if not, write to the Free Software
+    Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+*/
+
 
 function SZSubPageListWidget($args, $widget_args = 1) {
 	extract( $args, EXTR_SKIP );
@@ -15,7 +33,7 @@ function SZSubPageListWidget($args, $widget_args = 1) {
 	$widget_args = wp_parse_args( $widget_args, array( 'number' => -1 ) );
 	extract( $widget_args, EXTR_SKIP );
 
-	$options = get_option('SZSubPageListWidget');
+	$options = get_option('SZSubPageListWidget12');
 	if ( !isset($options[$number]) )
 		return;
 
@@ -45,7 +63,7 @@ function SZSubPageListWidget_control($widget_args) {
 	$widget_args = wp_parse_args( $widget_args, array( 'number' => -1 ) );
 	extract( $widget_args, EXTR_SKIP );
 
-	$options = get_option('SZSubPageListWidget');
+	$options = get_option('SZSubPageListWidget12');
 	if ( !is_array($options) )
 		$options = array();
 
@@ -71,8 +89,7 @@ function SZSubPageListWidget_control($widget_args) {
 			$exclude = $widget_text['exclude'];
 			$options[$widget_number] = compact( 'title', 'parent', 'exclude');
 		}
-
-		update_option('SZSubPageListWidget', $options);
+		update_option('SZSubPageListWidget12', $options);
 		$updated = true;
 	}
 
@@ -130,7 +147,7 @@ function SZSubPageListWidget_register() {
 	if ( !function_exists('wp_register_sidebar_widget') || !function_exists('wp_register_widget_control') )
 		return;
 
-	if ( !$options = get_option('SZSubPageListWidget') )
+	if ( !$options = get_option('SZSubPageListWidget12') )
 		$options = array();
 	$widget_ops = array('classname' => 'SZSubPageListWidget', 'description' => __('Lists child pages of a selected page'));
 	$control_ops = array('id_base' => 'szsubpagelist');

@@ -1,16 +1,16 @@
-=== Plugin Name ===
+=== SubZane Sub Page List Widget ===
 Contributors: Andreas Norman
 Donate link: 
 Tags: pages, widget, subpages, list
 Requires at least: 2.5
-Tested up to: 2.8.3
-Stable tag: 1.2.1
+Tested up to: 2.9.1
+Stable tag: 1.2.2
 
-Lists all subpages from a selected parent page.
+Lists all subpages from a selected parent page with option do exclude specific pages. 
 
 == Description ==
 
-This plugin simply lists all subpages from a selected parent page in the sidebar. This widget can be placed many times in your sidebar.
+This plugin simply lists all subpages from a selected parent page (with option do exclude specific pages) in the sidebar. This widget can be placed many times in your sidebar.
 
 == Installation ==
 
@@ -20,7 +20,7 @@ This plugin simply lists all subpages from a selected parent page in the sidebar
 
 == Frequently Asked Questions ==
 
-For any questions or suggestions regarding the plugin please visit http://www.subzane.com
+For any questions or suggestions regarding the plugin please visit http://www.andreasnorman.se
 
 == Screenshots ==
 

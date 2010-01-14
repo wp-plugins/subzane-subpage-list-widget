@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: SubZane Subpage List Widget
-Plugin URI: http://www.subzane.com/projects/subpage-list-widgetsubpage-list-widget/
+Plugin URI: http://www.andreasnorman.se/wordpress-plugins/sz-sub-page-list-widget/
 Description: Lists all subpages from a selected parent page.
 Author: Andreas Norman
 Version: 1.2.2
